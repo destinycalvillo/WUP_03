@@ -27,18 +27,46 @@ basicCN <- ggplot(davisdata,aes(y=alcohol,x=Seat))
 ```{r}
 basicCN + geom_boxplot()
 ```
-  
-  
-### get fancy  
 
+```{r}
+boxplot(alcohol~Seat,data=davisdata)
+```  
+
+This box plot shows that people who sit in the back tend to drink more than those who sit in the middle and front. Those in the middle drink more than those who sit in the front. Over 75% of people who sit in the back drink more than anyone sitting in the middle and front. 
+
+### get fancy  
+```{r}
+basicCN <- ggplot(davisdata,aes(x=Seat,y=alcohol))
+
+basicCN + geom_boxplot()
+```
 ```{r}
 basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='errorbar') + labs(title="Fancy notch boxplot \n with 2 lines")
 ```
 
+It appears that using this data we may be able to reject the null hypothesis. Based on these box plots, there is a clear difference in how much people drink depending on their seating position. 
+
 ## Numerical Summarys 
+```{r}
+favstats(alcohol~Seat,data=davisdata)
+```
+
+The back row is immensely different with their mean being 9.6. The middle row mean being 3.2. The front row mean holding the lowest at 1.8. 
 
 ## Inferential Tests
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
+
+We are going to reject the null hypothesis, but we will seek clarification on which rows were different from the others.
+
+```{r}
+plot(TukeyHSD(model1))
+```
+
+The results tell us that the front is different from the back, and the middle is different from the back. However, there is no difference from the middle and the front.  
 
 ## Conclusions
-
+For this assignment we began with analyzing which kind of helper file we needed. After we obtained it, which was a Numerical-Categorical file, we added a ggplot, box-plot, a numerical summery, and inferential tests. The data within the plots resulted in our answer; we will accept the alternative hypothesis as there is a difference between the alcohol you consume and the row you choose to sit in. We are confident that the front and back row are different from each other, and the middle is different from the back but is the same from the front row. 
 
